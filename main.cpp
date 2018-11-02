@@ -1,37 +1,24 @@
+#include <iostream>
+#include <thread>
 #include "p1Header.h"
-// void createThreads(int arrLength,char option, char numThreads);
+using namespace std;
 
-int sum(int * arr, int count){ //Funcion que suma los elem dek array
-  int sumatory;
-  for (int i = 0; i < count; i++) {
-    sumatory+= *(arr + i);
-  }
-  return sumatory;
-}
-
-double * createThreads(int arrLength,char option, char numThreads){ //Funcion que crea el array(de momento)
-  double * arrayNum= (double*)malloc(arrLength * sizeof(double)); //Reservando espacio para el array
-  // int arrayNum[arrLength];
-  for (int i = 0; i < arrLength; i++) {
-    arrayNum[i]=i+1; //Asignando valores al array
-  }
-  return  arrayNum  ;
-}
 
 
 int main(int argc, char** argv) {
+  solveArray solve;
   std::cout << "Have " << argc << " arguments:" << std::endl;
   for (int i = 0; i < argc; ++i) {  //Mostramos argumentos
     std::cout << argv[i] << std::endl;
   }
-  double *workingArray;  //Array con el que trabajamos
-  workingArray = createThreads(stoi(argv[1]),*argv[2],*argv[3]);
+  double * workingArray = solve.createArray(stoi(argv[1]),*argv[2],*argv[3]);    //Array con el que trabajamos
   std::cout << *(workingArray + 1) << std::endl; //Mostrar primer elemento
 
-  int *a1; //array a pasar a cada thread
-  int *a2;
+  //int *a1; //array a pasar a cada thread
+  //int *a2;
 
-  // std::thread t1{(f, even)};
+  std::thread t1(&solveArray::sum,workingArray, stoi(argv[1]));
+
   // std::thread t2{(f, odd)};
 
  /* Espera que finalicen */

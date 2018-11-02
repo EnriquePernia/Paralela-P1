@@ -1,9 +1,13 @@
-#include <iostream>
-#include <thread>
-#include <array>
+// This is start of the header guard.  p1Header_H can be any unique name.  By convention, we use the name of the header file.
+#ifndef p1Header_H
+#define p1Header_H
 
-using namespace std;
-
-int sum(int * arr, int count);
-double * createThreads(int arrLength,char option, char numThreads);
-int main(int argc, char** argv);
+// This is the content of the .h file, which is where the declarations go
+class solveArray
+{
+ public:
+ int sum(double * arr, int count);
+ double * createArray(int arrLength,char option, char numThreads);
+};
+// This is the end of the header guard
+#endif
