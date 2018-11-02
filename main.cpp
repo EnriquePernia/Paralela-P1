@@ -5,7 +5,7 @@
 #include "p1Header.h"
 using namespace std;
 
-
+//unsigned int n = std::thread::hardware_concurrency(); Maximo de cores
 
 int main(int argc, char** argv) {
   int executionType = (argv[3] == std::string("--multi-thread"))? 1:0;//Comparamos el tercer arg para ver si es --multi-thread
@@ -19,12 +19,16 @@ int main(int argc, char** argv) {
       switch (opType) {
         case 0:{
           std::cout << "suma" << '\n';
-          std::thread t1(&solveArray::sum,solve,workingArray, stoi(argv[1]));//Creamos thread que utiliza la funcion sum de la clase solveArray
-          std::thread t2(&solveArray::sum,solve,workingArray, stoi(argv[1]));
+          std::thread t1(&solveArray::sum,solve,std::ref(workingArray), stoi(argv[1]));//Creamos thread que utiliza la funcion sum de la clase solveArray
+          std::thread t2(&solveArray::sum,solve,std::ref(workingArray), stoi(argv[1]));
+          t1.join();
+          t2.join();
           break;}
         case 1:{
-          std::thread t1(&solveArray::xorr,solve,workingArray, stoi(argv[1]));//Creamos thread que utiliza la funcion xor de la clase solveArray
-          std::thread t2(&solveArray::xorr,solve,workingArray, stoi(argv[1]));
+          std::thread t3(&solveArray::xorr,solve,workingArray, stoi(argv[1]));//Creamos thread que utiliza la funcion xor de la clase solveArray
+          std::thread t4(&solveArray::xorr,solve,workingArray, stoi(argv[1]));
+          t3.join();
+          t4.join();
           break;}
       }
       break;}
