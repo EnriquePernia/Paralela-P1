@@ -17,8 +17,8 @@ int main(int argc, char** argv) {
   //int *a1; //array a pasar a cada thread
   //int *a2;
 
-  std::thread t1(&solveArray::sum,workingArray, stoi(argv[1]));
-
+  std::thread t1(&solveArray::sum,solve,workingArray, stoi(argv[1]));
+  t1.join();
   // std::thread t2{(f, odd)};
 
  /* Espera que finalicen */

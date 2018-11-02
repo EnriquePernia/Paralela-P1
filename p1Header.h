@@ -2,6 +2,8 @@
 #ifndef p1Header_H
 #define p1Header_H
 
+#include <iostream>
+#include <thread>
 // This is the content of the .h file, which is where the declarations go
 class solveArray
 {
