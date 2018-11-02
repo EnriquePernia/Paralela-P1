@@ -8,14 +8,17 @@ using namespace std;
 //unsigned int n = std::thread::hardware_concurrency(); Maximo de cores
 
 int main(int argc, char** argv) {
+  int executionType = 0;
+  if(argc>3){
   int executionType = (argv[3] == std::string("--multi-thread"))? 1:0;//Comparamos el tercer arg para ver si es --multi-thread
+  }
+  std::cout << (argv[2] == std::string("xor")) << '\n';
   int opType = (argv[2] == std::string("xor"))? 1:0;
   solveArray solve;
-  double * workingArray = solve.createArray(stoi(argv[1]),*argv[2],*argv[3]);
-
+  double * workingArray;
   switch (executionType) {
     case 0: {//Caso base 2 threads
-      std::cout << "suma" << '\n';
+      workingArray = solve.createArray(stoi(argv[1]),*argv[2],2);
       switch (opType) {
         case 0:{
           std::cout << "suma" << '\n';
