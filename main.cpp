@@ -1,10 +1,4 @@
-#include <iostream>
-#include <thread>
-#include <array>
-using namespace std;
-
-// Usar Malloc
-
+#include "p1Header.h"
 // void createThreads(int arrLength,char option, char numThreads);
 
 int sum(int * arr, int count){ //Funcion que suma los elem dek array
@@ -32,7 +26,7 @@ int main(int argc, char** argv) {
   }
   double *workingArray;  //Array con el que trabajamos
   workingArray = createThreads(stoi(argv[1]),*argv[2],*argv[3]);
-  std::cout << *(z + 1) << std::endl; //Mostrar primer elemento
+  std::cout << *(workingArray + 1) << std::endl; //Mostrar primer elemento
 
   int *a1; //array a pasar a cada thread
   int *a2;
