@@ -9,8 +9,7 @@ solveArray::solveArray(){}
 int solveArray::sum(double * arr, int count){ //Funcion que suma los elem del array
   int sumatory=0;
   for (int i = 0; i < count; i++) {
-    sumatory+= arr[i];
-    //*(arr + i) Se puede avanzar tambien asi ¿Por que?
+    sumatory+= arr[i]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
   }
   return sumatory;
 }
@@ -25,6 +24,6 @@ double * solveArray::createArray(int arrLength,char option, char numThreads){ //
 }
 
 
-// int solveArray::xor(double * arr,  int count){
-//   return 0;
-// }
+ int solveArray::xorr(double * arr,  int count){
+   return 0;
+ }
