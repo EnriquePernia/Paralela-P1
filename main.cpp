@@ -12,13 +12,12 @@ int main(int argc, char** argv) {
   if(argc>3){
   int executionType = (argv[3] == std::string("--multi-thread"))? 1:0;//Comparamos el tercer arg para ver si es --multi-thread
   }
-  std::cout << (argv[2] == std::string("xor")) << '\n';
   int opType = (argv[2] == std::string("xor"))? 1:0;
   solveArray solve;
   double * workingArray;
   switch (executionType) {
     case 0: {//Caso base 2 threads
-      workingArray = solve.createArray(stoi(argv[1]),*argv[2],2);
+      workingArray = solve.createArray(stoi(argv[1]),*argv[2],2);//Problema porque pasaba como terver argumento argv[4] y este es el caso sin multi
       switch (opType) {
         case 0:{
           std::cout << "suma" << '\n';
