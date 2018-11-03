@@ -11,7 +11,7 @@ class solveArray
  solveArray();
  int sum(double * _arr, int _count);
  int xorr(double * _arr, int _count);
- double * createArray(int arrLength,char option, char numThreads);
+ double ** createArray(int arrLength,char option, char numThreads);
 
 };
 // This is the end of the header guard
