@@ -15,27 +15,22 @@ int main(int argc, char** argv) {
   int opType = (argv[2] == std::string("xor"))? 1:0;
   solveArray solve;
   double ** workingArray;
-
   switch (executionType) {
     case 0: {//Caso base 2 threads
       workingArray = solve.createArray(stoi(argv[1]),*argv[2],2);//Problema porque pasaba como terver argumento argv[4] y este es el caso sin multi
       switch (opType) {
         case 0:{
-          for (size_t i = 0; i < sizeof(workingArray[1]); i++) {
-              std::cout << workingArray[1][i] << '\n';
-          }
-
-          std::thread t1(&solveArray::sum,solve,std::ref(workingArray[0]), stoi(argv[1]));//Creamos thread que utiliza la funcion sum de la clase solveArray
-          std::thread t2(&solveArray::sum,solve,std::ref(workingArray[1]), stoi(argv[1]));
+          std::thread t1(&solveArray::sum,solve,std::ref(workingArray[0]), 0);//Creamos thread que utiliza la funcion sum de la clase solveArray
+          std::thread t2(&solveArray::sum,solve,std::ref(workingArray[1]),1);
           t1.join();
           t2.join();
           break;}
         case 1:{
           std::cout << "xor" << '\n';
-          std::thread t3(&solveArray::xorr,solve,workingArray[0], stoi(argv[1]));//Creamos thread que utiliza la funcion xor de la clase solveArray
-          std::thread t4(&solveArray::xorr,solve,workingArray[1], stoi(argv[1]));
-          t3.join();
-          t4.join();
+          std::thread t1(&solveArray::xorr,solve,workingArray[0], stoi(argv[1])/2);//Creamos thread que utiliza la funcion xor de la clase solveArray
+          std::thread t2(&solveArray::xorr,solve,workingArray[1], stoi(argv[1])/2);
+          t1.join();
+          t2.join();
           break;}
       }
       break;}

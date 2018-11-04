@@ -9,8 +9,8 @@ class solveArray
 {
  public:
  solveArray();
- int sum(double * _arr, int _count);
- int xorr(double * _arr, int _count);
+ int sum(double * _arr, int numThread);
+ int xorr(double * _arr, int numThread);
  double ** createArray(int arrLength,char option, char numThreads);
 
 };
