@@ -2,6 +2,7 @@
 #include <thread>
 #include <cmath> //Para comprobar los posibles fallos del usuario
 #include <string> //Para comprobar si es multi Thread
+#include <vector>
 #include "p1Header.h"
 using namespace std;
 
@@ -9,45 +10,36 @@ using namespace std;
 
 int main(int argc, char** argv) {
   int executionType = 0;
+  int numThreads =2;
   if(argc>3){
-    int executionType = (argv[3] == std::string("--multi-thread"))? 1:0;//Comparamos el tercer arg para ver si es --multi-thread
+    if(argv[3] == std::string("--multi-thread"))//Comparamos el tercer arg para ver si es --multi-thread
+      numThreads = stoi(argv[4]);
   }
   int opType = (argv[2] == std::string("xor"))? 1:0;
   solveArray solve;
+  int num = stoi(argv[1]);
   double ** workingArray;
-  switch (executionType) {
-    case 0: {//Caso base 2 threads
-      workingArray = solve.createArray(stoi(argv[1]),*argv[2],2);//Problema porque pasaba como terver argumento argv[4] y este es el caso sin multi
+  std::thread myThreads[numThreads]; //Array de threads (Vector si das tiempo)
+      workingArray = solve.createArray(num,numThreads);//Problema porque pasaba como terver argumento argv[4] y este es el caso sin multi
       switch (opType) {
-        case 0:{
-          std::thread t1(&solveArray::sum,solve,std::ref(workingArray[0]), 0);//Creamos thread que utiliza la funcion sum de la clase solveArray
-          std::thread t2(&solveArray::sum,solve,std::ref(workingArray[1]),1);
-          t1.join();
-          t2.join();
+        case 0:{ //SUMA
+          for(size_t i = 0; i < numThreads; i++) {
+            if(i==0) myThreads[i] = std::thread(&solveArray::sum,solve,std::ref(workingArray[i]), 0);
+            else myThreads[i] = std::thread(&solveArray::sum,solve,std::ref(workingArray[i]), 1);
+         };
+          for (size_t i = 0; i < numThreads; i++){
+            myThreads[i].join();
+         };
           break;}
-        case 1:{
-          std::cout << "xor" << '\n';
-          std::thread t1(&solveArray::xorr,solve,workingArray[0], stoi(argv[1])/2);//Creamos thread que utiliza la funcion xor de la clase solveArray
-          std::thread t2(&solveArray::xorr,solve,workingArray[1], stoi(argv[1])/2);
-          t1.join();
-          t2.join();
+        case 1:{ //XOR
+          for(size_t i = 0; i < numThreads; i++) {
+           if(i==0) myThreads[i] = std::thread(&solveArray::xorOp,solve,std::ref(workingArray[i]), 0);
+           else myThreads[i] = std::thread(&solveArray::xorOp,solve,std::ref(workingArray[i]), 1);
+         };
+          for (size_t i = 0; i < numThreads; i++){
+            myThreads[i].join();
+         }
           break;}
-      }
-      break;}
-// case 1:{//Caso multi threading argv[4]
-    //   switch (opType) {
-    //     case 0:{
-    //       std::thread t1(&solveArray::sum,solve,workingArray, stoi(argv[1]));//Creamos thread que utiliza la funcion sum de la clase solveArray
-    //       std::thread t2(&solveArray::sum,solve,workingArray, stoi(argv[1]));
-    //       break;}
-    //     case 1:{
-    //       std::thread t1(&solveArray::xorr,solve,workingArray, stoi(argv[1]));//Creamos thread que utiliza la funcion xor de la clase solveArray
-    //       std::thread t2(&solveArray::xorr,solve,workingArray, stoi(argv[1]));
-    //       break;}
-    //   }
-    //   break;}
-  }    //Array con el que trabajamos
-
-  // t1.join();  //Esperamos a que finalice el thread
+        }
   return 0;
 }

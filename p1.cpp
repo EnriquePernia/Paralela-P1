@@ -25,13 +25,13 @@ int solveArray::sum(double * arr, int numThread){ //Funcion que suma los elem de
       sumatory+= arr[i]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
     }
   }
-  std::cout << sumatory << '\n';
+  std::cout << "Sum: "<<sumatory << '\n';
   mtx.unlock();
   return sumatory;
 }
 
 
-double ** solveArray::createArray(int arrLength,char option, char numThreads){ //Funcion que crea el array(de momento)
+double ** solveArray::createArray(int arrLength, char numThreads){ //Funcion que crea el array(de momento)
   double ** arrayNum= (double**)malloc(numThreads * sizeof(double)); //Reservando espacio para el array a devolver
   int count = 0;
   int auxCounting = 0;
@@ -60,11 +60,10 @@ double ** solveArray::createArray(int arrLength,char option, char numThreads){ /
     arrayNum[count][auxCounting] = x;
     auxCounting++;
   }
-  //std::cout << arrayNum[1][3] << '\n'; //Devuelve 588 ¿Accede a otra zona de la memora?
   return  arrayNum  ;
 }
 
 
- int solveArray::xorr(double * arr, int numThread){
+ int solveArray::xorOp(double * arr, int numThread){
    return 0;
  }

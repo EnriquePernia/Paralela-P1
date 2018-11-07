@@ -10,8 +10,8 @@ class solveArray
  public:
  solveArray();
  int sum(double * _arr, int numThread);
- int xorr(double * _arr, int numThread);
- double ** createArray(int arrLength,char option, char numThreads);
+ int xorOp(double * _arr, int numThread);
+ double ** createArray(int arrLength, char numThreads);
 
 };
 // This is the end of the header guard
