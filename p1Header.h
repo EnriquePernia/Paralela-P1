@@ -8,9 +8,9 @@
 class solveArray
 {
  public:
+enum class Oper{ sum, xorOp};
  solveArray();
- int sum(double * _arr, int numThread);
- int xorOp(double * _arr, int numThread);
+ int doOp(double * _arr, int numThread, Oper oper);
  double ** createArray(int arrLength, char numThreads);
 
 };
