@@ -10,7 +10,7 @@ class solveArray
  public:
 enum class Oper{ sum, xorOp};
  solveArray();
- int doOp(double * _arr, int numThread, Oper oper);
+ int doOp(double * _arr, Oper oper, int start, int end);
  double ** createArray(int arrLength, char numThreads);
 
 };

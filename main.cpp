@@ -5,10 +5,10 @@
 #include <vector>
 #include "p1Header.h"
 using namespace std;
-enum Oper { sum, xorr};
 //unsigned int n = std::thread::hardware_concurrency(); Maximo de cores
 
 int main(int argc, char** argv) {
+  int *lengthTracking;
   int executionType = 0;
   int numThreads =1;
   if(argc>3){ //Comprobamos si es multi threading
@@ -18,15 +18,28 @@ int main(int argc, char** argv) {
   solveArray::Oper opType = (argv[2] == std::string("xor"))? solveArray::Oper(1):solveArray::Oper(0);
   solveArray solve;
   int num = stoi(argv[1]);
-  double ** workingArray;
-  std::thread myThreads[numThreads]; //Array de threads (Vector si das tiempo)
-  workingArray = solve.createArray(num,numThreads);//Problema porque pasaba como terver argumento argv[4] y este es el caso sin multi
+  double * array = (double *)malloc(num * sizeof(double));
+  for(size_t i = 0; i<num; i++){
+    array[i]=i;
+  }
+  int extraNumbers = 0;
+  if ((num % numThreads) != 0)
+  { //Para tener en cuenta los  numeros que faltan(Trabajo extra para el thread 1)
+    extraNumbers = num - floor(num / numThreads) * numThreads;
+  }; //Para saber la longitud de los arrays
+  int size0 = floor(num / numThreads) + extraNumbers; //Tamanho del array para primer thread
+  int size1 = floor(num / numThreads); //Tamanho del array para resto de threads
+  std::thread myThreads[numThreads]; //Array de threads (Vector si das tiempo).
+  int start = 0;
+  int end = size0;
     for(size_t i = 0; i < numThreads; i++) {
-     if(i==0) myThreads[i] = std::thread(&solveArray::doOp,solve,std::ref(workingArray[i]), 0, opType); //Mejorado el bucle de threads, antes habia un switch
-      else myThreads[i] = std::thread(&solveArray::doOp,solve,std::ref(workingArray[i]), 1, opType);
-     };
+      myThreads[i] = std::thread(&solveArray::doOp,solve,std::ref(array), opType, start, end); //Mejorado el bucle de threads, antes habia un switch
+      if(i==0)start += end;
+      else start += size1;
+      end += size1;
+     }
     for (size_t i = 0; i < numThreads; i++){
       myThreads[i].join();
     };
     return 0;
-        }
+}

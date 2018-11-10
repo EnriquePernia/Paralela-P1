@@ -12,39 +12,28 @@ int *lengthTracking;
 constancia de la longitud de cada array Parapoder recorrerlo ya que utilizo
 pointers, por lo que sizeof(p) sera el tamanio del pointer = 8.*/
 
-int solveArray::doOp(double *arr, int numThread, Oper operation)
+int solveArray::doOp(double *arr, Oper operation, int start, int end)
 { //Funcion que suma los elem del array
+mtx.lock();
   switch (operation){
   case Oper::sum :{
     int sumatory = 0;
-    if (numThread == 0) {
-      for (int i = 1; i < lengthTracking[0]; i++) {
-        sumatory += arr[i]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
-      }
-    }
-    else{
-      for (int i = 0; i < lengthTracking[1]; i++){
-        sumatory += arr[i]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
-      }
+    for (size_t i = start; i < end; i++)
+    {
+      sumatory += arr[i];
     }
     std::cout << "Sum: " << sumatory << '\n';
+      mtx.unlock();
     return sumatory;
   }
   case Oper::xorOp:{
-    int xorNum = arr[0];;
-  if(numThread == 0){
-     xorNum = arr[2];
-    for (size_t i = 2; i < lengthTracking[0]-1; i++) { //Con 0 y 1 no operamos
+    int xorNum = arr[start];
+    for (size_t i = start+1; i < end; i++) {
       xorNum = xorNum^(int)arr[i+1]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
+      std::cout << "start: "<< start << " end: "<<end<< '\n';
     }
-  }
-  else{
-    for (size_t i = 0; i < lengthTracking[1]-1; i++) {
-      xorNum = xorNum^(int)arr[i+1]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
-      std::cout <<  xorNum << '\n';
-    }
-  }
-  std::cout << "Xor: "<<arr[0]<< '\n';
+  std::cout << "Xor: "<<xorNum<< '\n';
+    mtx.unlock();
   return xorNum;
   }
   }
