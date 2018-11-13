@@ -5,14 +5,13 @@
 #include <iostream>
 #include <thread>
 // This is the content of the .h file, which is where the declarations go
+extern int loggerValue;
 class solveArray
 {
  public:
-enum class Oper{ sum, xorOp};
+ enum class Oper{ sum, xorOp};
  solveArray();
  int doOp(double * _arr, Oper oper, int start, int end);
- double ** createArray(int arrLength, char numThreads);
-
 };
 // This is the end of the header guard
 #endif
