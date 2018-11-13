@@ -11,8 +11,8 @@ int logger(int *previousLoggerValue);
 int main(int argc, char **argv)
 {
   int numThreads = 1;
-  int x = 0;           // 'x' is 23
-  int *previousLoggerValue = &x; 
+  int x = 0; // 'x' is 23
+  int *previousLoggerValue = &x;
   std::thread myThreads[numThreads]; //Array de threads (Vector si das tiempo).
   std::thread loggerT;
   if (argc > 3)
@@ -38,12 +38,11 @@ int main(int argc, char **argv)
   int size1 = floor(num / numThreads);                //Tamanho del array para resto de threads
   int start = 0;
   int end = size0;
+  loggerT = std::thread(logger, previousLoggerValue);
   for (size_t i = 0; i < numThreads; i++)
   {
-    myThreads[i] = std::thread(&solveArray::doOp, solve, std::ref(array), opType, start, end); //Mejorado el bucle de threads, antes habia un switch
-    myThreads[i].join(); // Cuando termina un thread ejecutamos el logger
-    loggerT = std::thread(logger, previousLoggerValue);
-    loggerT.join(); //Terminamos el logger y pasamos al siguiente trhead para que no haya fallos
+    myThreads[i] = std::thread(&solveArray::doOp, solve, std::ref(array), opType, start, end); //Mejorado el bucle de threads, antes habia un switch                                                       
+   
     if (i == 0)
     {
       start += end;
@@ -52,17 +51,25 @@ int main(int argc, char **argv)
       start += size1;
     end += size1;
   }
-  // for (size_t i = 0; i < numThreads; i++)
-  // {
-  //   // myThreads[i].join();
-  //   // loggerT.join();               //Guardar los valores de las operaciones
-  // };
+  for (size_t i = 0; i < numThreads; i++)
+  {
+   myThreads[i].join();    // Cuando termina un thread ejecutamos el logger
+  }
+  conditionalLogger = 2; //Finalizamos logger
+  loggerT.join(); //Terminamos el logger y pasamos al siguiente trhead para que no haya fallos
   return 0;
 }
 
 int logger(int *previousValue) //Le pasamos un puntero a la direccion de la variable x donde iremos almacenando los valores
 {
-  *previousValue += loggerValue;
-  std::cout << "logger : " << *previousValue << '\n';
+  while (conditionalLogger != 2)
+  {
+    if (conditionalLogger == 1)
+    {
+      *previousValue += loggerValue;
+      std::cout << "logger : " << *previousValue << '\n';
+      conditionalLogger = 0; //Volvemos a esperar otro resultado
+    }
+  }
   return 0;
 }

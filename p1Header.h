@@ -6,6 +6,7 @@
 #include <thread>
 // This is the content of the .h file, which is where the declarations go
 extern int loggerValue;
+extern int conditionalLogger;
 class solveArray
 {
  public:

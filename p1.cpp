@@ -7,7 +7,8 @@
 using namespace std;
 std::mutex mtx;
 struct timeval t1, t2;
-int loggerValue = 0;
+int loggerValue = 0; //Variable por la que le pasamos los valores al logger
+int conditionalLogger = 0; //Variable global que despierta y duerme al logger
 solveArray::solveArray() {}
 /*No estoy utilizando container classes como vector por lo que tengo que tener
 constancia de la longitud de cada array Parapoder recorrerlo ya que utilizo
@@ -16,7 +17,7 @@ pointers, por lo que sizeof(p) sera el tamanio del pointer = 8.*/
 int solveArray::doOp(double *arr, Oper operation, int start, int end)
 { //Funcion que suma los elem del array desde una posicion inicial a una final
   struct timeval before, after;
-  time_t         elapsedUs;
+  time_t elapsedUs;
   mtx.lock();
   switch (operation)
   {
@@ -29,12 +30,13 @@ int solveArray::doOp(double *arr, Oper operation, int start, int end)
       sumatory += arr[i];
     }
     gettimeofday(&after, nullptr);
-    elapsedUs = after.tv_usec - before.tv_usec; // Elapsed microseconds
+    elapsedUs = after.tv_usec - before.tv_usec;            // Elapsed microseconds
     elapsedUs += (after.tv_sec - before.tv_sec) * 1000000; // Elapsed seconds
     std::cout << "Elapsed time for algorithm sum: " << elapsedUs << std::endl;
     std::cout << "Sum: " << sumatory << '\n';
     loggerValue = sumatory;
-    mtx.unlock(); 
+    conditionalLogger = 1; //Despertamos al logger 
+    mtx.unlock();
     return sumatory;
   }
   case Oper::xorOp:
@@ -46,18 +48,17 @@ int solveArray::doOp(double *arr, Oper operation, int start, int end)
       xorNum = xorNum ^ (int)arr[i + 1]; //*(arr + i) Se puede avanzar tambien asi ¿Por que?
     }
     gettimeofday(&after, nullptr);
-    elapsedUs = after.tv_usec - before.tv_usec; // Elapsed microseconds
+    elapsedUs = after.tv_usec - before.tv_usec;            // Elapsed microseconds
     elapsedUs += (after.tv_sec - before.tv_sec) * 1000000; // Elapsed seconds
     std::cout << "Elapsed time for algorithm Xor: " << elapsedUs << std::endl;
     std::cout << "Xor: " << xorNum << '\n';
     loggerValue = xorNum;
-    mtx.unlock(); 
+    conditionalLogger = 1;
+    mtx.unlock();
     return xorNum;
   }
   }
 }
-
-
 
 // double **solveArray::createArray(int arrLength, char numThreads)
 // {                                                                     //Funcion que crea el array(de momento)
