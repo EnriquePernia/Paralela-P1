@@ -54,7 +54,7 @@ int main(int argc, char **argv)
   for (size_t i = 0; i < numThreads; i++)
   {
    myThreads[i].join();    // Cuando termina un thread ejecutamos el logger
-  }
+  } 
   conditionalLogger = 2; //Finalizamos logger
   loggerT.join(); //Terminamos el logger y pasamos al siguiente trhead para que no haya fallos
   return 0;
